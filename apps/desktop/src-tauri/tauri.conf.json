@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MindFlip",
+  "version": "0.1.0",
+  "identifier": "com.mindflip.desktop",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "MindFlip",
+        "width": 1100,
+        "height": 760,
+        "minWidth": 800,
+        "minHeight": 560,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "resources": {
+      "../../backend/app/__init__.py": "backend/app/__init__.py",
+      "../../backend/app/__main__.py": "backend/app/__main__.py",
+      "../../backend/app/ipc_main.py": "backend/app/ipc_main.py",
+      "../../backend/app/api/__init__.py": "backend/app/api/__init__.py",
+      "../../backend/app/api/health.py": "backend/app/api/health.py",
+      "../../backend/app/api/ipc.py": "backend/app/api/ipc.py",
+      "../../backend/app/persistence/__init__.py": "backend/app/persistence/__init__.py",
+      "../../backend/app/persistence/engine.py": "backend/app/persistence/engine.py",
+      "../../backend/app/persistence/migrate.py": "backend/app/persistence/migrate.py",
+      "../../backend/app/persistence/models.py": "backend/app/persistence/models.py",
+      "../../backend/app/persistence/paths.py": "backend/app/persistence/paths.py",
+      "../../backend/app/runtime/__init__.py": "backend/app/runtime/__init__.py",
+      "../../backend/migrations/__init__.py": "backend/migrations/__init__.py",
+      "../../backend/migrations/env.py": "backend/migrations/env.py",
+      "../../backend/migrations/versions/__init__.py": "backend/migrations/versions/__init__.py",
+      "../../backend/migrations/versions/0001_initial.py": "backend/migrations/versions/0001_initial.py",
+      "../../backend/alembic.ini": "backend/alembic.ini"
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ]
+  }
+}

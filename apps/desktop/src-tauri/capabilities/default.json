@@ -1,0 +1,9 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capability for the desktop shell. Exposes the health IPC command and the core defaults.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default"
+  ]
+}

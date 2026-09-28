@@ -1,0 +1,45 @@
+.card {
+  border: 1px solid #2c2f36;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status.idle { background: #4a4d54; }
+.status.loading { background: #c9a227; }
+.status.ok { background: #3aaf5a; }
+.status.error { background: #c93a3a; }
+
+.label { color: #9aa0a6; }
+
+.payload { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+
+.actions { display: flex; gap: 8px; }
+
+button {
+  background: #1f2230;
+  border: 1px solid #2c2f36;
+  color: inherit;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font: inherit;
+}
+
+button:disabled { opacity: 0.6; cursor: progress; }

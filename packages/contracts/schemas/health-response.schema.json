@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindflip.local/contracts/health-response.schema.json",
+  "title": "MindFlip IPC Response Envelope",
+  "description": "Outer envelope for a successful response.",
+  "type": "object",
+  "required": ["protocol_version", "request_id", "ok", "result"],
+  "properties": {
+    "protocol_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ok": {
+      "type": "const",
+      "const": true
+    },
+    "result": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "const": "ok" },
+        "version": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

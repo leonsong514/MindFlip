@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mindflip.local/contracts/health.schema.json",
+  "title": "MindFlip IPC Envelope",
+  "description": "Outer envelope for every request and response exchanged between the Tauri host and the Python Agent Runtime.",
+  "type": "object",
+  "required": ["protocol_version", "request_id", "method"],
+  "properties": {
+    "protocol_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "type": "string",
+      "enum": ["health/check"]
+    },
+    "params": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}
