@@ -2,7 +2,7 @@
 
 ## 状态
 
-**17 条 AC 全部通过本地验证（2026-09-30）。** 本轮属于 P0 Engineering Foundation，目标是建立可靠、可验证、可自动化检查的前后端工程基础。范围为 Issues [#5](https://github.com/leonsong514/MindFlip/issues/5)、[#6](https://github.com/leonsong514/MindFlip/issues/6)、[#7](https://github.com/leonsong514/MindFlip/issues/7)、[#8](https://github.com/leonsong514/MindFlip/issues/8)。Issue 页面无法直接读取时，以用户粘贴的完整任务清单为准。
+**本地实现已完成；AC7.1/AC7.2 的真实 PR 验证待办。** 本轮属于 P0 Engineering Foundation，目标是建立可靠、可验证、可自动化检查的前后端工程基础。范围为 Issues [#5](https://github.com/leonsong514/MindFlip/issues/5)、[#6](https://github.com/leonsong514/MindFlip/issues/6)、[#7](https://github.com/leonsong514/MindFlip/issues/7)、[#8](https://github.com/leonsong514/MindFlip/issues/8)。Issue 页面无法直接读取时，以用户粘贴的完整任务清单为准。
 
 实现要点：
 

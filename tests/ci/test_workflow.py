@@ -89,3 +89,10 @@ def test_frontend_job_uses_npm_ci() -> None:
     frontend = data["jobs"]["frontend"]
     steps_text = yaml.safe_dump(frontend)
     assert "npm ci" in steps_text, "frontend job should use `npm ci`"
+
+
+def test_frontend_job_builds_production_assets() -> None:
+    data = _load_workflow()
+    frontend = data["jobs"]["frontend"]
+    steps_text = yaml.safe_dump(frontend)
+    assert "npm run build" in steps_text

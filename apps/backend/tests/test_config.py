@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 from app.config import defaults, load_config
+from app.persistence.paths import default_database_url, user_data_dir
 
 
 def test_defaults_returns_python_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -123,3 +124,32 @@ def test_env_file_does_not_load_when_empty_key(
 
     cfg = load_config()
     assert cfg.python_executable == "python"
+
+
+def test_env_file_data_dir_reaches_persistence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("MINDFLIP_DATA_DIR", raising=False)
+    monkeypatch.delenv("MINDFLIP_DB_URL", raising=False)
+    monkeypatch.chdir(tmp_path)
+    data_dir = tmp_path / "mindflip-data"
+    (tmp_path / ".env").write_text(f"MINDFLIP_DATA_DIR={data_dir}\n", encoding="utf-8")
+
+    assert user_data_dir() == data_dir
+    assert (
+        default_database_url()
+        == f"sqlite:///{(data_dir / 'database' / 'app.db').as_posix()}"
+    )
+
+
+def test_env_file_db_url_reaches_persistence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("MINDFLIP_DB_URL", raising=False)
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / ".env").write_text(
+        "MINDFLIP_DB_URL=sqlite:///custom.db\n", encoding="utf-8"
+    )
+
+    assert default_database_url() == "sqlite:///custom.db"
+    assert default_database_url(tmp_path) != "sqlite:///custom.db"

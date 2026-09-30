@@ -89,6 +89,8 @@ conda run -n mindflip python -m ruff format --check .
 
 数据库位于 `<data_dir>/database/app.db`。显式运行 `--init-db` 时通过 Alembic 创建 `storage_probe` 技术表；健康检查不会初始化数据库。迭代 01 不引入任何业务实体。
 
+普通配置由 `app/config.py` 按进程环境变量、当前工作目录的 `.env`、默认值顺序读取。持久层实际使用其中的 `MINDFLIP_DATA_DIR` 和 `MINDFLIP_DB_URL`；显式传入测试用 `base` 路径时优先使用该路径。`MINDFLIP_PYTHON` 必须在桌面程序启动前设为进程环境变量，Python 侧的 `.env` 无法改变 Rust 选择的解释器。
+
 ## 项目结构
 
 ```text

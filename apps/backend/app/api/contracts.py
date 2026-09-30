@@ -59,14 +59,14 @@ class HealthRequest(EnvelopeBase):
 class HealthResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    status: str
+    status: Literal["ok"]
     version: str
     timestamp: str
 
 
 class HealthSuccess(EnvelopeBase):
     ok: Literal[True] = True
-    result: dict
+    result: HealthResult
 
 
 class HealthErrorBody(BaseModel):
@@ -77,5 +77,7 @@ class HealthErrorBody(BaseModel):
 
 
 class HealthFailure(EnvelopeBase):
+    # Malformed input may have no usable request ID to echo.
+    request_id: str
     ok: Literal[False] = False
     error: HealthErrorBody

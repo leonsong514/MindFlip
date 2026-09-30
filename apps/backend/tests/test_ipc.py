@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from app import __version__
 from app.api import (
@@ -104,13 +105,27 @@ def test_build_success_response_shape() -> None:
     class _StubRequest:
         request_id = "r-1"
 
-    response = build_success_response(_StubRequest(), {"status": "ok"})
+    result = {"status": "ok", "version": "0.1.0", "timestamp": "t"}
+    response = build_success_response(_StubRequest(), result)
     assert response == {
         "protocol_version": 1,
         "request_id": "r-1",
         "ok": True,
-        "result": {"status": "ok"},
+        "result": result,
     }
+
+
+def test_build_success_response_rejects_invalid_result() -> None:
+    class _StubRequest:
+        request_id = "r-1"
+
+    with pytest.raises(ValidationError):
+        build_success_response(_StubRequest(), {"status": "wrong"})
+
+
+def test_build_error_response_rejects_unknown_code() -> None:
+    with pytest.raises(ValidationError):
+        build_error_response("r-1", "unexpected", "message")
 
 
 def test_subprocess_round_trip_health() -> None:

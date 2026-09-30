@@ -23,6 +23,7 @@ from app import __version__
 from app.api import health_payload
 from app.api.contracts import (
     PROTOCOL_VERSION,
+    HealthFailure,
     HealthRequest,
     HealthSuccess,
 )
@@ -98,12 +99,15 @@ def build_success_response(request: Request, result: dict) -> dict:
 
 
 def build_error_response(request_id: str, code: str, message: str) -> dict:
-    return {
-        "protocol_version": PROTOCOL_VERSION,
-        "request_id": request_id,
-        "ok": False,
-        "error": {"code": code, "message": message},
-    }
+    envelope = HealthFailure.model_validate(
+        {
+            "protocol_version": PROTOCOL_VERSION,
+            "request_id": request_id,
+            "ok": False,
+            "error": {"code": code, "message": message},
+        }
+    )
+    return json.loads(envelope.model_dump_json())
 
 
 def _emit(response: dict) -> None:

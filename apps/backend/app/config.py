@@ -9,12 +9,16 @@ Resolution order (highest priority first):
 
 1. Process environment variables.
 2. ``.env`` file in the repository root or ``apps/backend``.
-3. Compiled-in defaults returned by ``defaults()``.
+3. Code defaults returned by ``defaults()``.
 
 The loader is intentionally tiny. It does not implement dotenv
 parsing: the few keys it understands are simple ``KEY=VALUE`` lines.
 Comments and blank lines are tolerated. Quoted values are stripped
 of their surrounding quotes.
+
+The Python runtime uses data_dir and db_url for persistence. The Tauri
+host reads MINDFLIP_PYTHON from its own process environment before
+starting Python, so a backend .env cannot select that interpreter.
 
 API keys and similar secrets must never appear in a committed file.
 The gitignore already excludes ``.env``, ``.env.*`` and local secret
@@ -43,7 +47,7 @@ class Config:
 
 def defaults() -> Config:
     return Config(
-        python_executable=os.environ.get("MINDFLIP_PYTHON", "python"),
+        python_executable="python",
         data_dir=None,
         db_url=None,
     )
