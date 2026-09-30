@@ -17,10 +17,17 @@ import sys
 from dataclasses import dataclass
 from typing import Callable, Mapping
 
+from pydantic import ValidationError
+
 from app import __version__
 from app.api import health_payload
+from app.api.contracts import (
+    PROTOCOL_VERSION,
+    HealthRequest,
+    HealthSuccess,
+)
 
-PROTOCOL_VERSION = 1
+PROTOCOL_VERSION = PROTOCOL_VERSION
 
 
 class ProtocolError(Exception):
@@ -49,25 +56,18 @@ def parse_request(line: str) -> Request:
         raise ProtocolError("invalid_protocol", f"not valid json: {exc.msg}") from exc
     if not isinstance(raw, dict):
         raise ProtocolError("invalid_protocol", "request must be a json object")
-    if raw.get("protocol_version") != PROTOCOL_VERSION:
+    try:
+        request = HealthRequest.model_validate(raw)
+    except ValidationError as exc:
         raise ProtocolError(
             "invalid_protocol",
-            f"unsupported protocol_version: {raw.get('protocol_version')!r}",
-        )
-    request_id = raw.get("request_id")
-    if not isinstance(request_id, str) or not request_id:
-        raise ProtocolError("invalid_protocol", "request_id must be a non-empty string")
-    method = raw.get("method")
-    if not isinstance(method, str) or not method:
-        raise ProtocolError("invalid_protocol", "method must be a non-empty string")
-    params = raw.get("params", {})
-    if not isinstance(params, dict):
-        raise ProtocolError("invalid_protocol", "params must be an object")
+            f"request envelope failed validation: {exc.error_count()} error(s)",
+        ) from exc
     return Request(
         protocol_version=PROTOCOL_VERSION,
-        request_id=request_id,
-        method=method,
-        params=params,
+        request_id=request.request_id,
+        method=request.method,
+        params=dict(request.params),
     )
 
 
@@ -88,12 +88,13 @@ def dispatch(request: Request) -> dict:
 
 
 def build_success_response(request: Request, result: dict) -> dict:
-    return {
-        "protocol_version": PROTOCOL_VERSION,
-        "request_id": request.request_id,
-        "ok": True,
-        "result": result,
-    }
+    envelope = HealthSuccess(
+        protocol_version=PROTOCOL_VERSION,
+        request_id=request.request_id,
+        ok=True,
+        result=result,
+    )
+    return json.loads(envelope.model_dump_json())
 
 
 def build_error_response(request_id: str, code: str, message: str) -> dict:

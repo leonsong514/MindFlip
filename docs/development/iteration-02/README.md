@@ -1,10 +1,19 @@
-# 迭代 02：开发交接入口
+# 迭代 02：Engineering Reliability
 
 ## 状态
 
-**待定范围，尚未开始开发。** 架构基线 Phase 1 提到 Decision Core（Decision、Alternatives、Criteria、Decision history、Dashboard），但下轮的正式任务应以 GitHub Project 中对应条目的正文和验收条件为准。不要仅凭路线图把上述模块全部视为迭代 02 承诺，也不要在确认任务前创建空业务目录或迁移。
+**17 条 AC 全部通过本地验证（2026-09-30）。** 本轮属于 P0 Engineering Foundation，目标是建立可靠、可验证、可自动化检查的前后端工程基础。范围为 Issues [#5](https://github.com/leonsong514/MindFlip/issues/5)、[#6](https://github.com/leonsong514/MindFlip/issues/6)、[#7](https://github.com/leonsong514/MindFlip/issues/7)、[#8](https://github.com/leonsong514/MindFlip/issues/8)。Issue 页面无法直接读取时，以用户粘贴的完整任务清单为准。
 
-确认任务原文后，按顺序填写 [开发计划](01-development-plan.md)、[测试方案](02-test-plan.md)，实施过程中记录 [验证结果](03-verification.md)。
+实现要点：
+
+- 共享契约：新增 `apps/backend/app/api/contracts.py` 的 Pydantic 边界模型；`parse_request` 走 Pydantic 校验；新增 `tests/test_contracts.py` 与 `tests/test_ipc.py` 6 个负例；前端 `src/api/types.ts` 维持 `HealthResponse` 判别联合，Vitest 覆盖 typed invoke。
+- 质量工具：前端 ESLint 9 + Prettier 3 + Vitest 2；后端 Ruff（lint + format）+ pytest。命令通过 `apps/desktop/package.json` scripts 与 `apps/backend/pyproject.toml` 入口；临时违规样例验证 lint/typecheck/format 真的会失败。
+- 本地配置与凭证：新增 `apps/backend/app/config.py`、`tests/test_config.py`、`.env.example` 与 `docs/architecture/adr/0002-config-and-credentials.md`；`tests/test_credentials.py` 覆盖 `git check-ignore` 与明文 Key 扫描。
+- CI：`.github/workflows/ci.yml` 在 `ubuntu-latest` 上分 `backend` 与 `frontend` 两个 job；`tests/ci/test_workflow.py` 校验 YAML 结构与无硬编码密钥。
+
+按 [开发计划](01-development-plan.md) 实施，[测试方案](02-test-plan.md) 与实际命令、退出码、证据记录在 [验证结果](03-verification.md)。真实 GitHub PR 触发与失败传播需在 GitHub 上完成；本环境无 Actions 访问权限，仅静态校验 YAML。
+
+**不在本轮：** Decision Core、Agent Loop、模型接入、业务页面和 Windows 最终发行打包。架构路线图中的 Phase 1 Decision Core 不应被误当作本轮范围。
 
 ## 已有基础
 
@@ -16,10 +25,10 @@
 
 ## 开始前的工作
 
-1. 取得下一组 GitHub Project 任务的原文和验收条件，写本目录下的开发计划、测试方案与验证记录；逐条对应任务，不从架构路线图推测交付范围。
-2. 阅读 [迭代 01 复核记录](../iteration-01/04-verification.md) 和 [测试手册](../iteration-01/03-test-and-acceptance.md)，先复跑已有自动检查。若下一轮修改 IPC、资源、迁移或环境配置，再针对相应边界做安装后回归。
-3. 补记迭代 01 尚无逐项人工结果的 UI 健康成功、后端不可用、超时与重试。当前每次健康请求都会新建 Python 进程；失联测试应在测试会话中覆盖解释器路径，不能靠关闭一个常驻后端进程。
-4. 若下一轮要引入 Decision 数据模型，先定义迁移与持久化边界，再让 Application API 暴露领域操作；保持 AI 推荐、用户决定、实际行为和结果为独立概念。
+1. 阅读 [迭代 01 复核记录](../iteration-01/04-verification.md)、[测试手册](../iteration-01/03-test-and-acceptance.md)和当前 IPC 协议，先复跑基础检查。
+2. 按 #5 契约、#6 质量工具、#8 本地配置、#7 CI 的依赖顺序实施；#6 与 #8 可交错，CI 在本地命令稳定后收尾。
+3. 补记迭代 01 尚无逐项人工结果的 UI 健康成功、后端不可用、超时与重试；本轮契约变更必须保留原有 Health Check 能力。
+4. 不创建 Decision 业务实体、业务迁移、CRUD 或业务页面。
 
 ## 最低回归命令
 

@@ -21,16 +21,31 @@
   border-radius: 50%;
 }
 
-.status.idle { background: #4a4d54; }
-.status.loading { background: #c9a227; }
-.status.ok { background: #3aaf5a; }
-.status.error { background: #c93a3a; }
+.status.idle {
+  background: #4a4d54;
+}
+.status.loading {
+  background: #c9a227;
+}
+.status.ok {
+  background: #3aaf5a;
+}
+.status.error {
+  background: #c93a3a;
+}
 
-.label { color: #9aa0a6; }
+.label {
+  color: #9aa0a6;
+}
 
-.payload { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+.payload {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
 
-.actions { display: flex; gap: 8px; }
+.actions {
+  display: flex;
+  gap: 8px;
+}
 
 button {
   background: #1f2230;
@@ -42,4 +57,7 @@ button {
   font: inherit;
 }
 
-button:disabled { opacity: 0.6; cursor: progress; }
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}

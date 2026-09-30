@@ -143,3 +143,56 @@ def test_subprocess_round_trip_invalid_protocol() -> None:
     payload = json.loads(proc.stdout.strip())
     assert payload["ok"] is False
     assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_subprocess_round_trip_missing_field() -> None:
+    proc = _run_ipc('{"request_id":"r-3","method":"health/check"}\n')
+    assert proc.returncode == 0
+    payload = json.loads(proc.stdout.strip())
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_subprocess_round_trip_wrong_protocol_version() -> None:
+    proc = _run_ipc(
+        '{"protocol_version":2,"request_id":"r-4","method":"health/check"}\n'
+    )
+    assert proc.returncode == 0
+    payload = json.loads(proc.stdout.strip())
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_subprocess_round_trip_wrong_field_type() -> None:
+    proc = _run_ipc('{"protocol_version":1,"request_id":42,"method":"health/check"}\n')
+    assert proc.returncode == 0
+    payload = json.loads(proc.stdout.strip())
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_subprocess_round_trip_params_not_object() -> None:
+    proc = _run_ipc(
+        '{"protocol_version":1,"request_id":"r-5","method":"health/check","params":"oops"}\n'
+    )
+    assert proc.returncode == 0
+    payload = json.loads(proc.stdout.strip())
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_subprocess_round_trip_extra_field_rejected() -> None:
+    proc = _run_ipc(
+        '{"protocol_version":1,"request_id":"r-6","method":"health/check","mystery":1}\n'
+    )
+    assert proc.returncode == 0
+    payload = json.loads(proc.stdout.strip())
+    assert payload["ok"] is False
+    assert payload["error"]["code"] == "invalid_protocol"
+
+
+def test_error_response_shape_is_stable() -> None:
+    response = handle_line("not json")
+    assert set(response) == {"protocol_version", "request_id", "ok", "error"}
+    assert response["ok"] is False
+    assert set(response["error"]) == {"code", "message"}

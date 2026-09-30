@@ -11,11 +11,12 @@
 - [迭代 01 测试与验收](./docs/development/iteration-01/03-test-and-acceptance.md)
 - [迭代 01 复核记录](./docs/development/iteration-01/04-verification.md)
 - [ADR-IPC-001 IPC 传输选型（Accepted）](./docs/architecture/adr/0001-ipc-transport.md)：Tauri 与 Python 运行时之间的传输选型
+- [ADR-CFG-001 本地配置与凭证边界（Accepted）](./docs/architecture/adr/0002-config-and-credentials.md)：普通配置与敏感凭据的隔离规则
 - [IPC 协议 v1](./packages/contracts/protocol.md)：envelope、错误码、版本约定
 
 ## 当前状态
 
-迭代 01 的四项底座已实现并通过自动化检查。用户已确认安装后应用窗口可以运行；健康按钮结果及失败/超时状态尚无逐项人工记录，见[迭代 01 复核记录](./docs/development/iteration-01/04-verification.md)。后续迭代从[迭代 02 交接入口](./docs/development/iteration-02/README.md)开始核对范围。
+迭代 01 的四项底座已实现并通过自动化检查；迭代 02 的 17 条 AC（Issues #5–#8）已全部通过本地验证，详见[迭代 02 验证记录](./docs/development/iteration-02/03-verification.md)。CI 在 `.github/workflows/ci.yml` 中以 `ubuntu-latest` 跑前后端独立 job；真实 PR 触发需在 GitHub 上完成。迭代 01 复核记录中关于 UI 健康按钮返回值、失联与超时的人工逐项记录仍待后续迭代补齐。
 
 ## 运行与构建
 

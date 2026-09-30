@@ -6,10 +6,7 @@
 export const PROTOCOL_VERSION = 1 as const;
 
 export type ErrorCode =
-  | "backend_unavailable"
-  | "timeout"
-  | "invalid_protocol"
-  | "unknown_method";
+  "backend_unavailable" | "timeout" | "invalid_protocol" | "unknown_method";
 
 export interface HealthResult {
   status: "ok";

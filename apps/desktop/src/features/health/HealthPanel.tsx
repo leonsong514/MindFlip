@@ -48,9 +48,7 @@ export function HealthPanel() {
       </div>
 
       {indicator === "idle" && (
-        <p className={styles.label}>
-          尚未检查。点击下方按钮触发一次健康探针。
-        </p>
+        <p className={styles.label}>尚未检查。点击下方按钮触发一次健康探针。</p>
       )}
 
       {indicator === "loading" && (
@@ -70,11 +68,7 @@ export function HealthPanel() {
       )}
 
       <div className={styles.actions}>
-        <button
-          type="button"
-          onClick={run}
-          disabled={indicator === "loading"}
-        >
+        <button type="button" onClick={run} disabled={indicator === "loading"}>
           {indicator === "error" ? "重试" : "检查健康状态"}
         </button>
       </div>
