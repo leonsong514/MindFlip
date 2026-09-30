@@ -16,7 +16,7 @@
 
 ## 当前状态
 
-迭代 01 的四项底座已实现并通过自动化检查；迭代 02 的本地实现已完成，AC7.1/AC7.2 仍待真实 PR 的 GitHub Actions 验证，详见[迭代 02 验证记录](./docs/development/iteration-02/03-verification.md)。CI 在 `.github/workflows/ci.yml` 中以 `ubuntu-latest` 跑前后端独立 job；真实 PR 触发需在 GitHub 上完成。迭代 01 复核记录中关于 UI 健康按钮返回值、失联与超时的人工逐项记录仍待后续迭代补齐。
+迭代 01 的四项底座已实现并通过自动化检查；迭代 02 的 17 条 AC 已通过本地与真实 PR 验证，详见[迭代 02 验证记录](./docs/development/iteration-02/03-verification.md)。CI 在 `.github/workflows/ci.yml` 中以 `ubuntu-latest` 跑前后端独立 job；PR #11 已验证自动触发与失败传播。迭代 01 复核记录中关于 UI 健康按钮返回值、失联与超时的人工逐项记录仍待后续迭代补齐。
 
 ## 运行与构建
 

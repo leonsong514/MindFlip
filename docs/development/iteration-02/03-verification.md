@@ -27,8 +27,8 @@
 | AC6.3 | Backend lint 通过 | `python -m ruff check .` 退出 0；规则集 E/F/W（PEP8 核心） | `ruff check` 输出 `All checks passed!` | 通过 |
 | AC6.4 | Backend tests 通过 | `python -m pytest apps/backend/tests tests/ci -q` 共 69 passed, 1 skipped；原有临时 `assert False` 样例非零退出 | pytest 输出 | 通过 |
 | AC6.5 | 格式可自动检查 | 前端 `npm run format:check` 退出 0（Prettier 3）；后端 `python -m ruff format --check .` 退出 0；故意未格式化文件触发非零退出且不修改文件（已用临时文件验证） | `prettier --check .` All matched；`ruff format --check .` All formatted | 通过 |
-| AC7.1 | PR 自动触发 CI | 仓库根 `.github/workflows/ci.yml` 配置 `on: pull_request:`；静态测试通过 | 真实 PR 的 Actions run URL 尚无 | **待验证**：需测试 PR 自动触发 |
-| AC7.2 | 失败测试导致 CI 失败 | backend/frontend job 分别跑 pytest/Vitest；本地故意失败验证命令退出非零 | 真实失败 PR 的 Actions run URL 尚无 | **待验证**：需在测试 PR 上确认 Job 与 Workflow 失败，恢复后通过 |
+| AC7.1 | PR 自动触发 CI | [PR #11](https://github.com/leonsong514/MindFlip/pull/11) 创建后自动运行 CI；修复提交 `62b8ba6` 推送后再次自动运行 | [失败运行 #1](https://github.com/leonsong514/MindFlip/actions/runs/36727527238)、[成功运行 #2](https://github.com/leonsong514/MindFlip/actions/runs/36728044651) | 通过 |
+| AC7.2 | 失败测试导致 CI 失败 | 首次运行中 `test_env_file_overrides_defaults` 因跨平台测试路径断言失败；Backend Job 与整体 Workflow 均为 failure，Frontend Job 为 success。修正测试数据后，新运行两个 Job 与 Workflow 均为 success | [失败运行 #1](https://github.com/leonsong514/MindFlip/actions/runs/36727527238)、[成功运行 #2](https://github.com/leonsong514/MindFlip/actions/runs/36728044651) | 通过；真实失败已证明传播，无需另造临时失败提交 |
 | AC7.3 | 前后端检查结果可区分 | `ci.yml` 含 `backend` 与 `frontend` 两个独立 job，前端含 `npm run build`；静态测试验证两者存在 | YAML 结构；本地 `npm run build` 退出 0 | 通过（本地结构） |
 | AC7.4 | Workflow 无硬编码凭证 | `tests/ci/test_workflow.py::test_workflow_has_no_hardcoded_secret` 与 `test_workflow_uses_minimal_permissions` 通过；`permissions: contents: read` 限定最小权限 | pytest 输出 | 通过 |
 | AC8.1 | 仓库无真实凭证 | `apps/backend/tests/test_credentials.py::test_env_example_has_no_real_secret` 与 `test_python_source_has_no_real_secret` 扫描 `.env.example` 与 `apps/backend/app/**/*.py`；均未命中 `sk-`/`ghp_`/`AKIA`/`xox*`/`-----BEGIN *PRIVATE KEY-----` 模式 | pytest 通过 | 通过 |
@@ -52,8 +52,8 @@
 
 | 检查 | 结果与证据 |
 | --- | --- |
-| 测试 PR 自动触发及通过 | 本环境无 GitHub Actions 访问权限；本轮用 `tests/ci/test_workflow.py` 静态校验 `on: pull_request` 触发器与两个 job 的存在。真实 PR 触发与失败传播验证需用户在 GitHub 上完成。 |
-| 临时失败测试导致 Job/Workflow 失败并已撤销 | 临时违规文件（`.tmp-eslint/`、`.tmp-ts/`、`.tmp-prettier/`）已删除；未提交到仓库；本分支 diff 不含临时文件。 |
+| 测试 PR 自动触发及通过 | [PR #11](https://github.com/leonsong514/MindFlip/pull/11) 的 [运行 #2](https://github.com/leonsong514/MindFlip/actions/runs/36728044651) 自动触发并通过：Backend 62 passed，凭证测试 7 passed；Frontend Job 成功。 |
+| 失败测试导致 Job/Workflow 失败并已修复 | [运行 #1](https://github.com/leonsong514/MindFlip/actions/runs/36727527238) 的 Linux 路径断言失败，Backend Job 与 Workflow 为 failure，Frontend Job 为 success；提交 `62b8ba6` 修正测试数据后，[运行 #2](https://github.com/leonsong514/MindFlip/actions/runs/36728044651) 全部通过。没有添加临时失败文件。 |
 | 迭代 01 健康 UI 成功、失联、超时、重试 | 迭代 01 04-verification.md 已记录：用户报告安装后窗口可运行。UI 成功响应、失联与超时的逐项人工记录仍待办（由本轮未要求该补记，但已保留 AC5.3 的错误结构稳定性与 Rust 端 4 个 health 测试覆盖）。 |
 | 若改动资源/安装配置，安装后验证 | 本轮未改 Tauri `tauri.conf.json` 或 `Cargo.toml` 的资源/打包配置；仅添加 ESLint/Prettier/Vitest 与 Ruff/Pydantic/pyyaml 等开发依赖；`tauri build` 未重新执行（迭代 02 范围不要求）。 |
 
@@ -61,9 +61,8 @@
 
 逐项写出跳过、失败、环境限制、用户反馈与开发者复现之间的区别：
 
-- **15 条 AC 有本地证据，AC7.1/AC7.2 待真实 PR 验证**。本次复核补齐出站模型校验、配置接入持久化路径和 CI 前端构建步骤；后端与 CI 静态测试 69 passed, 1 skipped，Rust 健康 4 passed，前端各脚本退出 0。
-- **本地无法验证的项**：真实 PR 触发与 GitHub Actions 失败传播；CI YAML 在 GitHub 上的执行结果需要用户在 GitHub 上跑一次 PR 才能记录。
+- **17 条 AC 均有验证证据**。本地后端与 CI 静态测试 69 passed, 1 skipped，Rust 健康 4 passed，前端各脚本退出 0；真实 PR 上的失败与恢复运行分别证明 CI 失败传播与成功路径。
 - **本轮未要求的项**：UI 健康按钮返回值的逐项人工记录、超时与失联的人工截图、桌面生产构建在改动资源/安装配置后的重装验证——按文档说明，这些可在后续迭代首轮回归补记，不属于迭代 02 范围。
 - **TS 降级说明**：因 typescript-eslint 8.71 尚未支持 TypeScript 7.0（见 issue #10940），前端 `typescript` devDependency 从 `^7.0.2` 降级到 `^5.9.3`；这是为引入 ESLint 所做的最小必要修改。代码逻辑未变，迭代 01 已验证的 tsc 检查与 Vite 构建仍通过。
 
-状态：本地实现已完成。迭代 02 标记为 Done 前，需取得 AC7.1/AC7.2 的 GitHub Actions 证据。
+状态：迭代 02 的 17 条 AC 均已验证通过。PR #11 仍待评审和合并；合并不属于本验证记录的完成条件。

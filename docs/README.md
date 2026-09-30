@@ -9,4 +9,4 @@
 - [ADR-CFG-001 本地配置与凭证边界（Accepted）](architecture/adr/0002-config-and-credentials.md)：普通配置与敏感凭据的隔离规则。
 - [迭代 02 Engineering Reliability](development/iteration-02/README.md)：Issues #5–#8 的范围、开发计划、17 条 AC 测试映射与验证模板。
 
-迭代 01 已实现基础工程，开发规格与实际复核记录分别保留。首次迭代范围依据用户提供的 GitHub Project 前四项正文整理；Project 页面当时无法直接访问。迭代 02 Engineering Reliability 的本地实现已完成，AC7.1/AC7.2 仍需真实 PR 运行证据，详见[验证记录](development/iteration-02/03-verification.md)；真实 PR 触发需在 GitHub 上完成。
+迭代 01 已实现基础工程，开发规格与实际复核记录分别保留。首次迭代范围依据用户提供的 GitHub Project 前四项正文整理；Project 页面当时无法直接访问。迭代 02 Engineering Reliability 的 17 条 AC 已通过本地与真实 PR 验证，详见[验证记录](development/iteration-02/03-verification.md)；PR #11 已验证自动触发与失败传播。

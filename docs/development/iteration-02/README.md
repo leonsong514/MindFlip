@@ -2,7 +2,7 @@
 
 ## 状态
 
-**本地实现已完成；AC7.1/AC7.2 的真实 PR 验证待办。** 本轮属于 P0 Engineering Foundation，目标是建立可靠、可验证、可自动化检查的前后端工程基础。范围为 Issues [#5](https://github.com/leonsong514/MindFlip/issues/5)、[#6](https://github.com/leonsong514/MindFlip/issues/6)、[#7](https://github.com/leonsong514/MindFlip/issues/7)、[#8](https://github.com/leonsong514/MindFlip/issues/8)。Issue 页面无法直接读取时，以用户粘贴的完整任务清单为准。
+**17 条 AC 已通过本地与真实 PR 验证。** 本轮属于 P0 Engineering Foundation，目标是建立可靠、可验证、可自动化检查的前后端工程基础。范围为 Issues [#5](https://github.com/leonsong514/MindFlip/issues/5)、[#6](https://github.com/leonsong514/MindFlip/issues/6)、[#7](https://github.com/leonsong514/MindFlip/issues/7)、[#8](https://github.com/leonsong514/MindFlip/issues/8)。Issue 页面无法直接读取时，以用户粘贴的完整任务清单为准。
 
 实现要点：
 
@@ -11,7 +11,7 @@
 - 本地配置与凭证：新增 `apps/backend/app/config.py`、`tests/test_config.py`、`.env.example` 与 `docs/architecture/adr/0002-config-and-credentials.md`；`tests/test_credentials.py` 覆盖 `git check-ignore` 与明文 Key 扫描。
 - CI：`.github/workflows/ci.yml` 在 `ubuntu-latest` 上分 `backend` 与 `frontend` 两个 job；`tests/ci/test_workflow.py` 校验 YAML 结构与无硬编码密钥。
 
-按 [开发计划](01-development-plan.md) 实施，[测试方案](02-test-plan.md) 与实际命令、退出码、证据记录在 [验证结果](03-verification.md)。真实 GitHub PR 触发与失败传播需在 GitHub 上完成；本环境无 Actions 访问权限，仅静态校验 YAML。
+按 [开发计划](01-development-plan.md) 实施，[测试方案](02-test-plan.md) 与实际命令、退出码、证据记录在 [验证结果](03-verification.md)。PR #11 的 GitHub Actions 已验证自动触发、失败传播及修复后恢复通过。
 
 **不在本轮：** Decision Core、Agent Loop、模型接入、业务页面和 Windows 最终发行打包。架构路线图中的 Phase 1 Decision Core 不应被误当作本轮范围。
 
