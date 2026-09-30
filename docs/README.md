@@ -6,6 +6,7 @@
 - [迭代 01 测试与验收](development/iteration-01/03-test-and-acceptance.md)：测试矩阵、可复现步骤、交接清单与故障场景。
 - [迭代 01 复核记录](development/iteration-01/04-verification.md)：实际检查结果与仍需人工验证的项目。
 - [ADR-IPC-001 IPC 传输选型（Accepted）](architecture/adr/0001-ipc-transport.md)：Tauri 与 Python 运行时之间的传输选型。
-- [迭代 02 交接入口](development/iteration-02/README.md)：下轮开始前的范围确认、现有接口和回归检查。
+- [ADR-CFG-001 本地配置与凭证边界（Accepted）](architecture/adr/0002-config-and-credentials.md)：普通配置与敏感凭据的隔离规则。
+- [迭代 02 Engineering Reliability](development/iteration-02/README.md)：Issues #5–#8 的范围、开发计划、17 条 AC 测试映射与验证模板。
 
-迭代 01 已实现基础工程，开发规格与实际复核记录分别保留。首次迭代范围依据用户提供的 GitHub Project 前四项正文整理；Project 页面当时无法直接访问。
+迭代 01 已实现基础工程，开发规格与实际复核记录分别保留。首次迭代范围依据用户提供的 GitHub Project 前四项正文整理；Project 页面当时无法直接访问。迭代 02 Engineering Reliability 的 17 条 AC 已通过本地与真实 PR 验证，详见[验证记录](development/iteration-02/03-verification.md)；PR #11 已验证自动触发与失败传播。

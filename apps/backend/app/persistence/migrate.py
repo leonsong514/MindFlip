@@ -55,7 +55,6 @@ def current_revision(base: Path | None = None) -> str | None:
 
     from .engine import dispose_engine, open_engine
 
-    url = default_database_url(base)
     engine = open_engine(base)
     try:
         with engine.connect() as connection:

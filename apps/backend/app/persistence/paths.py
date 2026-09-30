@@ -12,6 +12,8 @@ import os
 import sys
 from pathlib import Path
 
+from app.config import load_config
+
 APP_DIR_NAME = "MindFlip"
 DATABASE_DIR = "database"
 DATABASE_FILE = "app.db"
@@ -28,9 +30,9 @@ def user_data_dir() -> Path:
       this directory.
     """
 
-    override = os.environ.get("MINDFLIP_DATA_DIR")
-    if override:
-        return Path(override)
+    override = load_config().data_dir
+    if override is not None:
+        return override
 
     if sys.platform.startswith("win"):
         base = os.environ.get("APPDATA")
@@ -61,5 +63,9 @@ def resolve_database_path(base: Path | None = None) -> Path:
 def default_database_url(base: Path | None = None) -> str:
     """Build a SQLAlchemy URL for the resolved SQLite path."""
 
+    if base is None:
+        override = load_config().db_url
+        if override:
+            return override
     path = resolve_database_path(base)
     return f"sqlite:///{path.as_posix()}"

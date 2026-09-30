@@ -1,13 +1,16 @@
-# Windows Python 3.12 dependency snapshot for iteration 01.
+# Windows Python 3.12 dependency snapshot for iteration 02.
 # Create a clean conda environment with Python only, then install this file
 # with pip. Do not mix conda- and pip-managed copies of these packages.
 alembic==1.20.0
+annotated-types==0.8.0
 colorama==0.4.6
 iniconfig==2.3.0
 Mako==1.4.3
 MarkupSafe==3.0.3
 packaging==26.3
 pluggy==1.6.0
+pydantic==2.10.6
+pydantic-core==2.27.2
 Pygments==2.21.0
 pytest==9.1.1
 ruff==0.16.9

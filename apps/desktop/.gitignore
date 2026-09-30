@@ -3,3 +3,7 @@ dist
 .DS_Store
 *.local
 .vite
+.tmp-eslint
+.tmp-prettier
+.tmp-pytest
+coverage
