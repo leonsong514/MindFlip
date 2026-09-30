@@ -39,7 +39,7 @@ def test_env_file_overrides_defaults(
             [
                 "# header comment",
                 "MINDFLIP_PYTHON=/usr/bin/python3",
-                'MINDFLIP_DATA_DIR="C:\\\\Users\\\\me\\\\AppData\\\\Roaming\\\\MindFlip"',
+                r'MINDFLIP_DATA_DIR="C:\Users\me\AppData\Roaming\MindFlip"',
                 "",
                 "MINDFLIP_DB_URL=sqlite:///tmp/foo.db",
             ]
